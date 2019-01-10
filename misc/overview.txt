@@ -1,0 +1,44 @@
+           --------------------------------------------
+           ;    BOSS - Bare Operating System Shell    ;
+           --------------------------------------------
+
+
+               x86-arch 16-bit real mode RAM memory 
+           --------------------------------------------
+
+     start          end         size           description
+     
+  0x00000500    0x00007BFF   29.7 KiB      Conventional memory
+  0x00007C00    0x00007DFF    512 bytes    OS bootsector
+  0x00007E00    0x0007FFFF  480.5 KiB      Conventional memory
+
+
+                        BOSS - memory map
+                    -------------------------
+
+     start          end         size         description
+
+  0x00000500    0x00006BFF   26.3 KiB      system programs     
+  0x00006C00    0x00007BFF   4095 bytes    stack
+  0x00007C00    0x00007DFF    512 bytes    bootloader
+  0x00007E00    0x0007FFFF  480.5 KiB      free memory
+
+
+                     BOSS - floppy image map
+                 -------------------------------
+
+      start          end         size         description
+
+  0x00000000    0x00000200    512 bytes    bootloader     
+  0x00000201    0x0000????      ? KiB      system shell
+  0x0000????    0x0000????      ? bytes    system programs
+
+
+                   Build tools and environment
+               -----------------------------------
+
+          OS > linux mint
+ text editor > micro by zyedidia (https://github.com/zyedidia/micro)
+   assembler > NASM The Netwide Assembler (https://www.nasm.us): command nasm
+  boot image > Data Duplicator : command - dd
+     testing > QEMU emulator(https://www.qemu.org) : command - qemu-system-i386
