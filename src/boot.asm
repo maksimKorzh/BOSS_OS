@@ -52,7 +52,6 @@
 ;                                                                                 ;
 ;---------------------------------------------------------------------------------;
 ;*********************************************************************************;
-
 [bits 16]
 
 ;*********************************************************************************;
@@ -113,12 +112,6 @@ start:
     
     call load_sector
 
-    mov si, welcome
-    call print
-
-    mov ah, 0x00
-    int 0x16
-
     jmp SHELL:0x0000
 
 load_sector:
@@ -134,10 +127,10 @@ load_sector:
     .err:
     mov si, error
     call print
-    jmp $
-    
+    jmp $    
 
 print:
+    cld
     mov ah, 0x0E
 
     .next_char:
@@ -150,7 +143,6 @@ print:
     .end:
     ret
 
-welcome db 'BOSS has booted successfully! Press any key to continue...', 0
 error db 'Failed to load sector!', 0
 
 times 510 - ($ - $$) db 0

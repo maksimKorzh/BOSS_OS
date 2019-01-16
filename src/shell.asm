@@ -69,77 +69,160 @@
 %define ENTER 0x1C
 %define BACKSPACE 0x0E
 
-mov ax, 0x50
+mov ax, cs
 mov ds, ax
+mov es, ax
 
-mov si, 0
-call print_str
+call set_video_mode
+call display_prompt
+    
+shell_loop:
+    call reset_input
+    call update_shell
+    call read_command
 
+    ; check if command was printed
+    cmp byte [user_input], 0
+    je .no_input
 
-push ax
-mov ax,cs
-mov ds,ax
-mov es,ax
-pop ax
-;push testt
-;call print
-push axx
-push ax
-call tohex
+    call update_shell
+    
+    ; search command
+    call search_command
 
-push bxx
-push bx
-call tohex
+    mov ah, 0x00
+    int 0x16        
 
-push cxx
-push cx
-call tohex
+    ; infinite loop
+    jmp shell_loop
 
-push dxx
-push dx
-call tohex
+    .no_input:
+        jmp shell_loop
 
-push css
-push cs
-call tohex
+reset_input:
+    mov di, user_input
+    mov al, 0
+    times 20 stosb
+    ret
+   
+update_shell:
+    call set_video_mode
+    call display_prompt
+    ret
 
-push dss
-push ds
-call tohex
+set_video_mode:
+    ; 80 x 25
+    mov ah, 0x00
+    mov al, 0x03
+    int 0x10
 
-push sss
-push ss
-call tohex
+    ; set cursor position
+    mov ah, 0x02
+    mov dh, 23
+    mov dl, 0
+    int 0x10
 
-push ess
-push es
-call tohex
+    ; box cursor
+    mov ch, 0
+ 	mov cl, 7
+ 	mov ah, 1
+ 	int 10h
+    ret
 
-push spp
-push sp
-call tohex
+display_prompt:
+    ; set character attribute
+    mov ah, 0x09
+    mov bl, 0x02
+    int 0x10
 
-push sii
-push si
-call tohex
+    ; print command prompt
+    mov si, prompt
+    call print
+    ret
 
-push dii
-push di
-call tohex
+read_command:
+    mov di, user_input
 
-push gss
-push gs
-call tohex
+    .next_byte:
+        ; get user input from keyboard
+        mov ah, 0x00
+        int 0x16
 
+        ; return on Enter key pressed
+        cmp ah, ENTER
+        je .return
+        
+        ; store and print input character
+        stosb
+        mov ah, 0x0E
+        int 0x10
+        jmp .next_byte
 
-push fss
-push fs
-call tohex
+    .return:
+        ret
 
+search_command:
+    mov bx, 0
+    
+    .next_command:
+        mov ax, word [command_table + bx]
+        cmp ax, end_command
+        je .return
+        add bx, 2
+        call compare_command
 
-jmp $
+        ;mov ah, 0x0E
+        ;mov al, cl
+        ;int 0x10
 
-print_str:
+        cmp cl, 1
+        je .execute
+        
+        jmp .next_command
+
+        .invalid_command:
+            mov si, error_no_command
+            call print
+            mov ah, 0x00
+            int 0x16
+            jmp .next_command
+
+        .execute:
+            mov si, found_command
+            call print
+            ret
+
+        .return:
+            mov si, error_no_command
+            call print        
+            ret
+
+compare_command:
+    cld
+    mov di, user_input
+    mov si, ax
+    
+    .next_byte:
+        lodsb
+        scasb
+        jne .return_false 
+        cmp al, 0
+        je .return_true
+        jmp .next_byte    
+    
+        .return_true:
+            mov cl, 1
+            ret
+
+        .return_false:
+            mov cl, 0
+            ret
+
+;jmp $
+
+print:
+    ;pusha
+    cld
     mov ah, 0x0E
 
     .next_char:
@@ -148,71 +231,22 @@ print_str:
     je .end
     int 0x10
     jmp .next_char
+    
     .end:
+    ;popa
     ret
 
+prompt db ' BOSS $ ', 0
+error_no_command db 'No such command!', 0
+error_no_input db 'Enter a valid command!', 0
+found_command db 'found command!', 0
 
-print:	;print a zero terminated string
-	pusha
-	mov bp,sp
-	mov si,[bp+18] 
-	cont:
-		lodsb
-		or al,al
-		jz dne
-		mov ah,0x0e
-		mov bx,0
-		mov bl,7
-		int 10h
-		jmp cont
-	dne:
-		mov sp,bp
-		popa
-		ret
+user_input times 20 db 0
 
-
-
-
-tohex:
-	pusha
-	mov bp,sp
-	mov dx, [bp+20]
-	push dx	
-	call print
-	mov dx,[bp+18]
-
-	mov cx,4
-	mov si,hexc
-	mov di,hex+2
-	
-	stor:
-	
-	rol dx,4
-	mov bx,15
-	and bx,dx
-	mov al, [si+bx]
-	stosb
-	loop stor
-	push hex
-	call print
-	mov sp,bp
-	popa
-	ret
-hex db "0x0000",10,13,0
-hexc db "0123456789ABCDEF"
-testt db "hello",10,13,0
-css db "CS: ",0
-dss db "DS: ",0
-sss db "SS: ",0
-ess db "ES: ",0
-gss db "GS: ",0
-fss db "FS: ",0
-axx db "AX: ",0
-bxx db "BX: ",0
-cxx db "CX: ",0
-dxx db "DX: ",0
-spp db "SP: ",0
-bpp db "BP: ",0
-sii db "SI: ",0
-dii db "DI: ",0
-
+command_help db 'help', 0
+command_clear db 'lang', 0
+command_list db 'list', 0
+command_view db 'view', 0
+command_edit db 'edit', 0
+end_command db  0
+command_table dw command_help, command_clear, command_list, command_view, command_edit, end_command, 0
