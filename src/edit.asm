@@ -1,5 +1,11 @@
 [bits 16]
 
+;%define ESC 0x01
+;%define LEFT 0x4B
+;%define RIGHT 0x4D
+;%define ENTER 0x1C
+;%define BACKSPACE 0x0E
+
 mov ah, 0x00
 mov al, 0x03
 int 0x10

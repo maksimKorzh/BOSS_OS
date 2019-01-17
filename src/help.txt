@@ -3,14 +3,14 @@
 
     BOSS commands:
     
+     new - clear source in memory
+    load - load source from floppy image
+    save - save source to floppy image
     view - view source
     edit - edit source
-    save - save source to floppy image
-    fuck - execute source
+     run - execute source
     
     Brainfuck instructions:
-    
-    layout - int progmem[30000] = {0}; pointer - int *ptr = progmem;
     
     > :    ++ptr;
     < :    --ptr;

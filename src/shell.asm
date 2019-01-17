@@ -65,12 +65,6 @@
 
 %define PROG_LOC 0x90
 
-%define ESC 0x01
-%define LEFT 0x4B
-%define RIGHT 0x4D
-%define ENTER 0x1C
-%define BACKSPACE 0x0E
-
 mov ax, cs
 mov ds, ax
 mov es, ax
@@ -159,7 +153,7 @@ read_command:
         int 0x16
 
         ; return on Enter key pressed
-        cmp ah, ENTER
+        cmp ah, 0x1C    ; Enter scan code ;
         je .return
         
         ; store and print input character
@@ -282,11 +276,13 @@ prompt db ' BOSS $ ', 0
 error_no_command db 'No such command!', 0
 error_sector db 'Failed to load sector!', 0
 
-command_brainfuck db 'fuck', 0
+command_brainfuck db 'run', 0
 command_view db 'view', 0
 command_save db 'save', 0
 command_edit db 'edit', 0
+command_new db 'new', 0
+command_load db 'load', 0
 end_command db  0
-command_list dw command_brainfuck, command_view, command_save, command_edit, end_command, 0
+command_list dw command_brainfuck, command_view, command_save, command_edit, command_new, command_load, end_command, 0
 
 user_input times 20 db 0
