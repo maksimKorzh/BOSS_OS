@@ -1,0 +1,22 @@
+
+                BOSS - Brainfuck Operating System Shell - v 0.0.1
+
+    BOSS commands:
+    
+    view - view source
+    edit - edit source
+    save - save source to floppy image
+    fuck - execute source
+    
+    Brainfuck instructions:
+    
+    layout - int progmem[30000] = {0}; pointer - int *ptr = progmem;
+    
+    > :    ++ptr;
+    < :    --ptr;
+    + :    ++*ptr;
+    - :    --*ptr;
+    . :    putchar(*ptr);
+    , :    *ptr = getchar();
+    [ :    while(*ptr) {
+    ] :    }

@@ -77,7 +77,7 @@
 %define FILES 0x50
 %define SHELL 0x70
 
-%define files_sector 2
+%define help_sector 2
 %define shell_sector 3
 
 %define floppy 0x00
@@ -108,7 +108,7 @@ start:
     mov ax, FILES
     mov es, ax
     mov bx, 0
-    mov cl, files_sector
+    mov cl, help_sector
     
     call load_sector
 
@@ -125,7 +125,7 @@ load_sector:
     ret
     
     .err:
-    mov si, error
+    mov si, error_sector
     call print
     jmp $    
 
@@ -143,7 +143,7 @@ print:
     .end:
     ret
 
-error db 'Failed to load sector!', 0
+error_sector db 'Failed to load sector!', 0
 
 times 510 - ($ - $$) db 0
 dw 0xAA55

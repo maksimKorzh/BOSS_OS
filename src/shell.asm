@@ -63,6 +63,8 @@
 ;---------------------------------------------------------------------------------;
 ;*********************************************************************************;
 
+%define PROG_LOC 0x90
+
 %define ESC 0x01
 %define LEFT 0x4B
 %define RIGHT 0x4D
@@ -116,12 +118,6 @@ set_video_mode:
     mov al, 0x03
     int 0x10
 
-    ; set cursor position
-    mov ah, 0x02
-    mov dh, 23
-    mov dl, 0
-    int 0x10
-
     ; box cursor
     mov ch, 0
  	mov cl, 7
@@ -130,12 +126,26 @@ set_video_mode:
     ret
 
 display_prompt:
+    ; print help
+    mov ax, 0x50    ; help location ;
+    mov ds, ax    
+    mov si, 0
+    call print
+
+    ; set cursor position
+    mov ah, 0x02
+    mov dh, 23
+    mov dl, 0
+    int 0x10
+
     ; set character attribute
     mov ah, 0x09
     mov bl, 0x02
     int 0x10
 
     ; print command prompt
+    mov ax, 0x70
+    mov ds, ax    
     mov si, prompt
     call print
     ret
@@ -162,18 +172,16 @@ read_command:
         ret
 
 search_command:
-    mov bx, 0
+    mov bx, 0   ; command list index ;
+    mov dl, 3   ; sector index ;
     
     .next_command:
-        mov ax, word [command_table + bx]
+        mov ax, word [command_list + bx]
         cmp ax, end_command
         je .return
         add bx, 2
+        inc dl
         call compare_command
-
-        ;mov ah, 0x0E
-        ;mov al, cl
-        ;int 0x10
 
         cmp cl, 1
         je .execute
@@ -188,8 +196,19 @@ search_command:
             jmp .next_command
 
         .execute:
-            mov si, found_command
-            call print
+            ; load sector
+            mov ax, PROG_LOC
+            mov es, ax
+            mov bx, 0
+            mov cl, dl ; sector index
+
+            call load_sector
+            jmp PROG_LOC:0x0000
+
+            mov ah, 0x0E
+            mov al, 'b'
+            int 0x10
+            
             ret
 
         .return:
@@ -218,35 +237,56 @@ compare_command:
             mov cl, 0
             ret
 
-;jmp $
+load_sector:
+    mov al, 1
+    mov ch, 0
+    mov dh, 0
+    mov dl, 0x00 ;floppy
+    mov ah, 0x02
+    int 0x13
+    jc .err
+    ret
+
+    .err:
+    mov si, error_sector
+    call print
+    mov ah, 0x00
+    int 0x16
+    ret
 
 print:
-    ;pusha
     cld
     mov ah, 0x0E
 
     .next_char:
-    lodsb
-    cmp al, 0
-    je .end
-    int 0x10
-    jmp .next_char
+        lodsb
+        cmp al, 10
+        je .new_line
+
+    .end_str:
+        cmp al, 0
+        je .end
+        int 0x10
+        jmp .next_char
+
+    .new_line:
+        int 0x10
+        mov al, 13
+        jmp .end_str
     
     .end:
-    ;popa
-    ret
+        ret
 
 prompt db ' BOSS $ ', 0
+
 error_no_command db 'No such command!', 0
-error_no_input db 'Enter a valid command!', 0
-found_command db 'found command!', 0
+error_sector db 'Failed to load sector!', 0
 
-user_input times 20 db 0
-
-command_help db 'help', 0
-command_clear db 'lang', 0
-command_list db 'list', 0
+command_brainfuck db 'fuck', 0
 command_view db 'view', 0
+command_save db 'save', 0
 command_edit db 'edit', 0
 end_command db  0
-command_table dw command_help, command_clear, command_list, command_view, command_edit, end_command, 0
+command_list dw command_brainfuck, command_view, command_save, command_edit, end_command, 0
+
+user_input times 20 db 0
