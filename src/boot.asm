@@ -76,11 +76,9 @@
 
 %define HELP 0x50
 %define SHELL 0x70
-%define SOURCE 0x110
 
 %define help_sector 2
 %define shell_sector 3
-%define source_sector 10
 
 %define floppy 0x00
 
@@ -113,14 +111,6 @@ start:
     mov bx, 0
     mov al, 1
     mov cl, help_sector
-    
-    call load_sector
-
-    mov ax, SOURCE
-    mov es, ax
-    mov bx, 0
-    mov al, 50  ; 25KiB ;
-    mov cl, source_sector
     
     call load_sector
 

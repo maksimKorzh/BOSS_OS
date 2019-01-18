@@ -24,7 +24,7 @@ mov bx, 0
 mov al, 50  ; 25KiB ;
 mov cl, source_sector
 
-call load_sector
+call load_source
 
 ; print info ;
 mov ax, LOAD
@@ -36,11 +36,11 @@ mov ah, 0x00
 int 0x16
 jmp SHELL:0x0000
 
-load_sector:
+load_source:
     mov ch, 0
     mov dh, 0
     mov dl, 0x00    ; floppy ;
-    mov ah, 0x02
+    mov ah, 0x02    ; load ;
     int 0x13
     jc .err
     ret

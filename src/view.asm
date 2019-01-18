@@ -6,6 +6,8 @@
 
 %define ESC 0x01
 
+cld
+
 ; 80 x 25
 mov ah, 0x00
 mov al, 0x03

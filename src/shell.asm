@@ -155,6 +155,9 @@ read_command:
         ; return on Enter key pressed
         cmp ah, 0x1C    ; Enter scan code ;
         je .return
+
+        cmp ah, 0x0E
+        je read_command
         
         ; store and print input character
         stosb
