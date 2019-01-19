@@ -1,20 +1,23 @@
-++       Cell c0 = 2
-> +++++  Cell c1 = 5
+[                         ASCII printable characters
 
-[        Start your loops with your cell pointer on the loop counter (c1 in our case)
-< +      Add 1 to c0
-> -      Subtract 1 from c1
-]        End your loops with the cell pointer on the loop counter
+    Dec  Char   Dec  Char   Dec  Char   Dec  Char   Dec  Char   Dec  Char
 
-At this point our program has added 5 to 2 leaving 7 in c0 and 0 in c1
-but we cannot output this value to the terminal since it is not ASCII encoded!
+    32   Space  48   0      64   @      80   P      96   `      112  p
+    33   !      49   1      65   A      81   Q      97   a      113  q
+    34   "      50   2      66   B      82   R      98   b      114  r
+    35   #      51   3      67   C      83   S      99   c      115  s
+    36   $      52   4      68   D      84   T      100  d      116  t
+    37   %      53   5      69   E      85   U      101  e      117  u
+    38   &      54   6      70   F      86   V      102  f      118  v
+    39   '      55   7      71   G      87   W      103  g      119  w
+    40   (      56   8      72   H      88   X      104  h      120  x
+    41   )      57   9      73   I      89   Y      105  i      121  y
+    42   *      58   :      74   J      90   Z      106  j      122  z
+    43   +      59   ;      75   K      91   [      107  k      123  {
+    44   ,      60   <      76   L      92   \      108  l      124  |
+    45   -      61   =      77   M      93   ]      109  m      125  }
+    46   .      62   >      78   N      94   ^      110  n      126  ~
+    47   /      63   ?      79   O      95   _      111  o      127  DEL ]
 
-To display the ASCII character "7" we must add 48 to the value 7
-48 = 6 * 8 so let's use another loop to help us!
-
-++++ ++++  c1 = 8 and this will be our loop counter again
-[
-< +++ +++  Add 6 to c0
-> -        Subtract 1 from c1
-]
-< .        Print out c0 which has the value 55 which translates to "7"!
+++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]          hello world
+>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.      program

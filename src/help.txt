@@ -1,5 +1,5 @@
 
-                BOSS - Brainfuck Operating System Shell - v 0.0.1
+                     - Brainfuck Operating System Shell -
 
     BOSS commands:
     

@@ -1,0 +1,45 @@
+           --------------------------------------------
+           ;    BOSS - Bare Operating System Shell    ;
+           --------------------------------------------
+
+
+               x86-arch 16-bit real mode RAM memory 
+           --------------------------------------------
+
+     start          end         size       description
+     
+  0x00000500    0x00007BFF   29.7 KiB      Conventional memory
+  0x00007C00    0x00007DFF    512 bytes    OS bootsector
+  0x00007E00    0x0007FFFF  480.5 KiB      Conventional memory
+
+
+                        BOSS - memory map
+                    -------------------------
+
+     start          end         size       description
+
+  0x00000500    0x000006FF    512 bytes    help file
+  0x00000700    0x000008FF    512 bytes    system shell
+  0x00000900    0x000010FF    512 bytes    system command
+  0x00001100    0x000064FF  25600 bytes    brainfuck source
+  0x00006C00    0x00007BFF   4095 bytes    stack
+  0x00007C00    0x00007DFF    512 bytes    bootloader
+  0x00007E00    0x0000F32F  30000 bytes    brainfuck "infinite tape"
+
+
+                     BOSS - floppy image map
+                 -------------------------------
+
+      start          end         size      description
+
+  0x00000000    0x000001FF    512 bytes    bootloader     
+  0x00000200    0x000003FF    512 bytes    help file
+  0x00000400    0x000005FF    512 bytes    system shell
+  0x00000600    0x000007FF    512 bytes    brainfuck interpreter
+  0x00000800    0x00000FFF    512 bytes    view command
+  0x00001000    0x000011FF    512 bytes    save command
+  0x00001200    0x000013FF    512 bytes    edit command
+  0x00001400    0x000015FF    512 bytes    new command
+  0x00001600    0x000017FF    512 bytes    load command
+  0x00001800    0x00007BFF    512 bytes    brainfuck source
+
