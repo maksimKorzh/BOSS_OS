@@ -12,6 +12,8 @@ Brainfuck Operating System Shell
     a primitive text editor, load file/save file from floppy
     image, view it without editing and finally run.
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/WeNI1k9--TQ/0.jpg)](https://www.youtube.com/watch?v=WeNI1k9--TQ)
+
 # Run in emulator
 
     Tested with QEMU. To run the OS you must have qemu-system.
@@ -34,5 +36,3 @@ Brainfuck Operating System Shell
     It should boot...
     
     Note: it doesn't write source file to floppy image in Live USB mode
-
-![video](https://www.youtube.com/watch?v=WeNI1k9--TQ)
