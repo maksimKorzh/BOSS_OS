@@ -1,6 +1,8 @@
 # BOSS
 Brainfuck Operating System Shell
 
+!boss(https://github.com/maksimKorzh/BOSS/blob/master/boss.gif)
+
 # Overview
 
     BOSS is a x86-arch 16-bit real-mode OS that consists of
