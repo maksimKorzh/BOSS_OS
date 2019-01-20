@@ -1,7 +1,7 @@
 # BOSS
 Brainfuck Operating System Shell
 
-!boss(https://github.com/maksimKorzh/BOSS/blob/master/boss.gif)
+!.boss(https://github.com/maksimKorzh/BOSS/blob/master/boss.gif)
 
 # Overview
 
