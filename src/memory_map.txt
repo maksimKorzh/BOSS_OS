@@ -41,5 +41,5 @@
   0x00001200    0x000013FF    512 bytes    edit command
   0x00001400    0x000015FF    512 bytes    new command
   0x00001600    0x000017FF    512 bytes    load command
-  0x00001800    0x00007BFF    512 bytes    brainfuck source
+  0x00001800    0x00007BFF  25600 bytes    brainfuck source
 
