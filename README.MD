@@ -34,3 +34,5 @@ Brainfuck Operating System Shell
     It should boot...
     
     Note: it doesn't write source file to floppy image in Live USB mode
+
+![video](https://www.youtube.com/watch?v=WeNI1k9--TQ)
